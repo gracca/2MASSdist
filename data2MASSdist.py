@@ -9,28 +9,29 @@
 
 import subprocess
 
-obj   = 'NGC7023-F2'
+obj   = 'BHR001'
 fname = 'out-2mass-' + obj
+lobj  = '-c=%s' % obj
 
-# ejecutamos el comando
+# command to execute in bash
 command = ['vizquery',
            '-source=II/246',
-           '-c.bm=60x60',
-           #'-c.bm=30x30',
+           '-c.bm=45x45',
            '-out=RAJ2000 DEJ2000 Jmag Jcmsig Hmag Hcmsig Kmag Kcmsig',
            '-out.form=mini',
-           '-c=314.744713 +67.160805',
-           #'-c=BHR 142',
-           'Jcmsig=<0.035',
-           'Hcmsig=<0.035',
-           'Kcmsig=<0.035',
+           lobj,
+           'Jcmsig=<0.03',
+           'Hcmsig=<0.03',
+           'Kcmsig=<0.03',
            'Qflg=AAA']
 
-# guardamos los datos
+# save data
 with open(fname, 'wb') as out:
     p = subprocess.Popen(command, stdout=out)
     p.wait()
 
-# borramos las primeras 49 líneas
+# erease first 49 lines
 lines = open(fname).readlines()
 open(fname, 'w').writelines(lines[49:-1])
+
+print("\nData for " + obj + " is ready!\n")
